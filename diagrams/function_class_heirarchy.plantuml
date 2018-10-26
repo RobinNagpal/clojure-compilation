@@ -1,0 +1,64 @@
+@startuml
+
+interface Runnable
+interface Callable
+interface IFn
+
+
+interface IMeta
+interface IObj
+
+
+interface Comparator
+interface Fn
+interface Serializable
+
+
+
+abstract class AFn
+abstract class AFunction
+class simple_namespace$combine_sets
+
+Callable <|- IFn
+Runnable <|- IFn
+
+IFn <|-- AFn
+
+IMeta <|-- IObj
+AFn <|-- AFunction
+IObj <|- AFunction
+Comparator <|- AFunction
+Fn <|- AFunction
+Serializable <|- AFunction
+AFunction <|-- simple_namespace$combine_sets
+
+interface IFn {
+    public Object invoke() ;
+    public Object invoke(Object arg1) ;
+    public Object invoke(Object arg1, Object arg2) ;
+    public Object invoke(Object arg1, Object arg2, Object arg3) ;
+    public Object invoke(Object arg1, Object arg2, Object arg3, Object arg4) ;
+    {method} .
+    {method} .
+    {method} .
+
+}
+abstract class AFn {
+    public Object call() {  invoke()}
+    public void run(){ invoke() }
+    public Object invoke() { throwArity(0);}
+    public Object invoke(Object arg1) { throwArity(1);}
+    public Object invoke(Object arg1, Object arg2) { throwArity(2);}
+    public Object invoke(Object arg1, Object arg2, Object arg3) { throwArity(3); }
+    {method} .
+    {method} .
+    {method} .
+}
+
+class simple_namespace$combine_sets {
+  {field} Var const__0 = (Var)RT.var("clojure.set", "union")
+  public static Object invokeStatic(Object s1, Object s2)
+  public Object invoke(Object var1, Object var2)
+}
+
+@enduml

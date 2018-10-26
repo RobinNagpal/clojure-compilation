@@ -1,0 +1,63 @@
+@startuml
+component comp1 [
+(ns xxx-test.simple-namespace
+\t  (:require [clojure.set :as cs]))
+
+(def hello "message")
+
+(def keyword-var :a-keyword )
+
+(defn combine-sets [s1 s2] \n\t (cs/union s1 s2))
+]
+
+note right
+Clojure compiler creates
+- A loader class: <name>__init.class
+- Each fn will produce a class
+-
+end note
+
+class simple_namespace__init {
++ {method} __init()
+const__0 = (Var)RT.var("clojure.core", "in-ns");
+const__1 = (AFn)Symbol.intern((String)null, "xxx-test.simple-namespace");
+const__2 = (AFn)Symbol.intern((String)null, "clojure.core");
+const__3 = (Var)RT.var("xxx-test.simple-namespace", "hello");
+
+const__10 = (Var)RT.var("xxx-test.simple-namespace", "keyword-var");
+const__13 = (Keyword)RT.keyword((String)null, "a-keyword");
+
+const__14 = (Var) RT.var("xxx-test.simple-namespace", "combine-sets");
+const__18 = (AFn) RT.map(......);
+
+----
+{method} + __load()
+((IFn)const__0.getRawRoot()).invoke(const__1);
+((IFn)(new loading__5569__auto____40())).invoke();
+
+const__3.bindRoot("message");
+
+const__10.bindRoot(const__13);
+
+const__14.bindRoot(new combine_sets());
+
+-- Static Init Block --
+__init()
+__load()
+}
+
+class simple_namespace$combine_sets {
+{field} const__0 = (Var)RT.var("clojure.set", "union");
+----
+{method} + public static Object invokeStatic(Object s1, Object s2)
+IFn var10000 = (IFn)const__0.getRawRoot();
+return var10000.invoke(s1, s2);
+
+
+{method} + public Object invoke(Object var1, Object var2)
+    return invokeStatic(var1, var2);
+}
+
+simple_namespace__init -[hidden]- simple_namespace$combine_sets
+@enduml
+

@@ -1,0 +1,22 @@
+@startuml
+
+participant namespace__init.class
+participant RT
+participant Symbol
+participant Var
+participant Namespace
+
+namespace__init.class -> namespace__init.class: init
+namespace__init.class -> RT: var(ns : "clojure.core", name: "in-ns")
+RT -> Symbol:Symbol.intern(null, ns)
+RT <- Symbol: new Symbol(ns, name: null)
+RT -> Namespace:Namespace.findOrCreate(ns)
+RT <- Namespace: ns
+RT -> Var: Var.intern(Namespace: ns, Symbol: sym)
+Var -> Namespace:intern(Namespace: ns, Symbol: sym)
+Namespace -> Namespace: mappings.assoc(sym, Var(this, sym))
+
+namespace__init.class -> Symbol: intern
+namespace__init.class -> RT: mappings.assoc()
+
+@enduml
